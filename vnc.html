@@ -69,14 +69,6 @@
     <!-- add Script for button F1 browser - Open chat -->
     <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
     <style>
-        /* 
-        
-        2. Extra keys
-        3. Display Option
-        4. Screen Option
-        5. Chat Box
-        */
-
         /* ---- 1. Control Bar -----*/
         .control-bar-settings {
             display: flex;
@@ -236,16 +228,15 @@
 
         .chat-box {
             height: auto;
-            /* padding: 8px; */
-            position: fixed;
+            position: absolute;
             top: 25%;
-            right: 0;
+            /* right: 0; */
             background: #d7d7d7;
             border-top-left-radius: 3px;
             border-bottom-left-radius: 3px;
             min-width: 250px;
 
-            transition: 0.5s ease-in-out;
+            transition: 0.2s ease-in-out;
             opacity: 0;
             visibility: hidden;
             transform: translateX(75px);
@@ -294,7 +285,7 @@
             height: 135px;
         }
 
-        .conversation div {
+        .conversation .test {
             padding: 5px 0 0 5px;
         }
 
@@ -338,13 +329,16 @@
             }
         }
 
-        /* GENERAL */
-        .float-left {
-            float: left;
+        .progress {
+            padding: 0 !important;
+            margin: 5px;
+            background-color: #f5f5f5;
         }
 
-        .float-right {
-            float: right;
+        .progress-bar {
+            color: #fff;
+            text-align: center;
+            background-color: #337ab7;
         }
     </style>
 </head>
@@ -771,7 +765,7 @@
     </div>
 
     <!-- noVNC Chat -->
-    <div id="chat_box" class="chat-box">
+    <div id="chat_box" class="chat-box" draggable="true">
         <div class="title-chat">
             <span style="float: left; margin-top: 3px;">Ultraview</span>
             <input style="width: 22px; float: right; margin-right: 3px;" onclick="closeChatBox()" type="image"
@@ -798,14 +792,60 @@
                 <div class="test">
                     <span class="partner-mess"><b>Máy đối tác </b>(2:29): </span>fdghidfhgih
                 </div>
+
+                <!-- File đang upload -->
+                <div style="margin: 5px; background: lightblue;border-radius: 5px; padding: 5px;">
+                    <div style="float: left; width: 15%;">
+                        <img style="width: 30px; margin-top: 2px;" src="app/images/update/file.png" alt="">
+                        <div style="margin-top: 2px;">10:04</div>
+                    </div>
+                    <div style="float: left; width: 77%;">
+                        <div class="progress" style="background: lightblue; margin: 0 5px;">
+                            <div style="text-align: center;">xxx.rar</div>
+                            <div style="background: white;">
+                                <div class="progress-bar" style="width:70%; margin: 3px 0 5px 0;">
+                                    70%
+                                </div>
+                            </div>
+                            <div style="text-align: center; font-size: 11px;">6.95 /119 MB</div>
+                        </div>
+                    </div>
+                    <div style="float: left; width: 8%;">
+                        <img style="width: 15px;margin-top: 15px;" src="app/images/update/close.png" alt="">
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+
+                <!-- File upload  thành công-->
+                <div style="margin: 5px; background: #d0e4eafc;border-radius: 5px; padding: 5px;">
+                    <div style="float: left; width: 15%;">
+                        <img style="width: 30px; margin-top: 2px;" src="app/images/update/file.png" alt="">
+                        <div style="margin-top: 2px;">10:04</div>
+                    </div>
+                    <div style="float: left; width: 80%;">
+                        <div class="progress" style="background: #d0e4eafc; margin: 0 5px;">
+                            <div style="margin-top: 4px;">xxx.rar</div>
+                            <div style="font-size: 11px; margin-top: 2px;">119 MB</div>
+                            <div style="margin-top: 4px; text-align: center;">Success</div>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
             </div>
 
             <div style="margin-top: 7px;">
                 <input id="input_chat_box" type="text"
                     style="margin: 0; padding: 5px; float: left; border-radius: 2px; width: 66%; border: 1px solid #a9a9a961;"
                     placeholder="Nhấn F1 để chat nhanh">
-                <input style="width: 25px; float: left; margin-top: 3px; margin-left: 10px;" type="image"
-                    alt="Extra keys" src="app/images/update/attach.png" id="" class="" title="Attach File">
+                <div class="image-upload">
+                    <label for="file-input">
+                        <img style="width: 25px; float: left; margin-top: 3px; margin-left: 10px;"
+                            src="app/images/update/attach.png" />
+                    </label>
+
+                    <input style="display: none;" id="file-input" type="file" />
+                </div>
+
                 <input style="width: 25px; float: right; margin-top: 3px;" type="image" alt="Extra keys"
                     src="app/images/update/send-mess.png" id="" class="" title="Attach File">
                 <div style="clear: both;"></div>
@@ -916,22 +956,77 @@
 
         // Chat Enter - content chat box
         shortcut.add("Enter", function () {
+            // Get time now
             let d = new Date();
             let hours = d.getHours();
             let min = d.getMinutes();
             let newChat = document.getElementById("input_chat_box").value;
 
+            // Add new node chat to the conversation and refresh
             let parent = document.getElementById('conversation');
             let newChild = '<div class="test"><span class="my-mess"><b>Tôi </b>(' + hours + ':' + min + '): </span >' + newChat + '</div > ';
             parent.insertAdjacentHTML('beforeend', newChild);
-
             document.getElementById("input_chat_box").value = "";
 
+            // Scroll to the lastest chat 
             let listChat = document.getElementsByClassName("test");
             let lastChat = listChat[listChat.length - 1];
             lastChat.scrollIntoView({ behavior: 'smooth' });
-
         });
+
+
+        // Move chat box anywhere you want
+        function drag_start(event) {
+            var style = window.getComputedStyle(event.target, null);
+            event.dataTransfer.setData("text/plain",
+                (parseInt(style.getPropertyValue("left"), 10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
+        }
+        function drag_over(event) {
+            event.preventDefault();
+            return false;
+        }
+        function drop(event) {
+            var offset = event.dataTransfer.getData("text/plain").split(',');
+            var dm = document.getElementById('chat_box');
+            let widthOfChatBox = document.getElementById('chat_box').offsetWidth;
+            let heightOfChatBox = document.getElementById('chat_box').offsetHeight;
+
+            // Set width max khi di chuyển chat box
+            if (event.clientX > (screen.width - widthOfChatBox)) {
+                dm.style.left = (screen.width - widthOfChatBox - 20) + 'px';
+                // Không hiểu khác nhau là gì ? 
+                // console.log(posLeftChatBox);
+                // console.log(dm.style.left);
+            } else {
+                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+            }
+
+            // Set height max khi di chuyển chat box
+            console.log(screen.height);
+            console.log(heightOfChatBox);
+            let test = screen.height - heightOfChatBox;
+            console.log(test);
+
+            if (event.clientY > (screen.height - heightOfChatBox)) {
+                dm.style.top = (screen.height - heightOfChatBox) + 'px';
+            } else {
+                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+            }
+
+            // dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+            // dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+            event.preventDefault();
+            return false;
+        }
+        var dm = document.getElementById('chat_box');
+        dm.addEventListener('dragstart', drag_start, false);
+        document.body.addEventListener('dragover', drag_over, false);
+        document.body.addEventListener('drop', drop, false);
+
+
+        // let intPosLeftChatBox = posLeftChatBox.slice(posLeftChatBox.length - 3, posLeftChatBox.length - 1);
+        // console.log(intPosLeftChatBox);
+        // console.log(typeof posLeftChatBox);
     </script>
 </body>
 
