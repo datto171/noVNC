@@ -55,6 +55,9 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="app/styles/base.css">
 
+    <!-- (ADD CUSTOME FILE CSS) -->
+    <link rel="stylesheet" href="app/styles/custome-vnc.css">
+
     <!-- this is included as a normal file in order to catch script-loading errors as well -->
     <script src="app/error-handler.js"></script>
 
@@ -66,388 +69,130 @@
     <!-- actual script modules -->
     <script type="module" crossorigin="anonymous" src="app/ui.js"></script>
     <!-- end scripts -->
+
+    <!-- script dành cho di chuyển chat box và btn control bar  -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <!-- add Script for button F1 browser - Open chat -->
     <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
-    <style>
-        /* ---- 1. Control Bar -----*/
-        .control-bar-settings {
-            display: flex;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            pointer-events: none;
-            transition: 0.2s ease-in-out;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-25px);
-        }
 
-        .control-bar-active {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0px);
-        }
+    <!-- (ADD CUSTOME FILE JS) -->
+    <script src="app/custome-ui.js"></script>
 
-        .arrow-control-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: white;
-            pointer-events: none;
-            cursor: pointer;
-            transition: 0.2s ease-in-out;
-            transform: translateY(0px);
-        }
-
-        .arrow-control-bar-active {
-            transform: translateY(45px);
-        }
-
-        .arrow-control-bar img {
-            pointer-events: auto;
-            cursor: pointer;
-        }
-
-        /* ------ 2. Detail Control Bar Settings ------- */
-        .general-settings {
-            pointer-events: auto;
-            background: rgb(110, 132, 163);
-            height: 100%;
-            min-width: 100px;
-            text-align: center;
-        }
-
-        .general-settings:first-child {
-            border-left: 1px solid white;
-        }
-
-        .private-settings {
-            padding: 0px 7px;
-            cursor: pointer;
-            border-right: 1px solid white;
-            border-bottom: 1px solid white;
-        }
-
-        .private-settings:hover {
-            background: rgba(144, 171, 208, 0.6);
-        }
-
-        .private-settings:hover input {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .private-settings span {
-            margin-left: 8px;
-            display: inline-block;
-        }
-
-        .settings-icon {
-            margin: 5px 0;
-            display: inline-block;
-        }
-
-        /* ---- 3. Extra keys -----*/
-        .extra-keys {
-            position: absolute;
-            text-align: center;
-            top: 0px;
-            left: 0;
-            right: 0;
-            pointer-events: none;
-            transition: 0.2s ease-in-out;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(0px);
-        }
-
-        .extra-keys-active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(75px);
-        }
-
-        .extra-keys .details {
-            display: inline-block;
-            pointer-events: auto;
-            padding-right: 6px;
-            background: rgb(92, 92, 92);
-        }
-
-        .extra-keys .details .noVNC_button {
-            margin: 7px 0;
-        }
-
-        .extra-keys .details:first-child {
-            padding-left: 8px;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-        }
-
-        .extra-keys .details:last-child {
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-
-
-        /* 4. Option Select (Option Display and Option Screen) */
-        .option-select {
-            text-align: left;
-            padding: 3px 0px 3px 10px;
-            cursor: pointer;
-            border-left: 1px solid white;
-            border-right: 1px solid white;
-            border-bottom: 1px solid white;
-        }
-
-        .option-select:hover {
-            background: rgba(144, 171, 208, 0.6);
-        }
-
-        .advan-option {
-            display: none;
-        }
-
-        .advan-option-open {
-            display: block;
-        }
-
-        .mobile-settings {
-            display: none;
-        }
-
-        /* 5. Chat Box */
-        .chat-box-handle {
-            position: fixed;
-            top: 40%;
-            right: 0px;
-        }
-
-        .chat-box {
-            height: auto;
-            position: absolute;
-            top: 25%;
-            /* right: 0; */
-            background: #d7d7d7;
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-            min-width: 250px;
-
-            transition: 0.2s ease-in-out;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(75px);
-        }
-
-        .chat-box-open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0px);
-        }
-
-        .title-chat {
-            padding: 5px 0;
-            background: #bbbaba;
-            border-bottom: 2px solid;
-            border-top-left-radius: 3px;
-        }
-
-        .title-chat span {
-            padding-left: 5px;
-        }
-
-        .body-chat {
-            font-size: 12px;
-            padding: 8px;
-        }
-
-        .body-chat span {
-            margin-left: 3px;
-        }
-
-        .controller-comp,
-        .conversation {
-            overflow: auto;
-            margin: 3px 0 6px 0;
-            border-radius: 2px;
-            background: white;
-            border: 1px solid #a9a9a961;
-        }
-
-        .controller-comp {
-            height: 60px;
-        }
-
-        .conversation {
-            height: 135px;
-        }
-
-        .conversation .test {
-            padding: 5px 0 0 5px;
-        }
-
-        .my-mess {
-            color: grey;
-        }
-
-        .partner-mess {
-            color: #00008bb8;
-            ;
-        }
-
-        .btn-up-file {
-            float: right;
-            margin-top: 3px;
-        }
-
-        @media only screen and (max-width: 767px) {
-            .general-settings {
-                min-width: auto;
-            }
-
-            .private-settings span {
-                display: none;
-            }
-
-            .private-settings {
-                padding: 0px 4px;
-            }
-
-            .mobile-settings {
-                display: block;
-            }
-
-            .noVNC_button {
-                padding: 3px 3px;
-            }
-
-            .settings-icon {
-                margin: 3px 0;
-            }
-        }
-
-        .progress {
-            padding: 0 !important;
-            margin: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .progress-bar {
-            color: #fff;
-            text-align: center;
-            background-color: #337ab7;
-        }
-    </style>
 </head>
 
 <body>
+    <div id="test_box"></div>
+
     <div id="arrow_control_bar_handle" onclick="toggleControlbar()" class="arrow-control-bar">
-        <img style="width: 35px;" src="app/images/update/arrow-control-bar.png" alt="">
+        <img style="width: 35px;" id="btn_control_bar" src="app/images/update/arrow-control-bar.png" alt="">
     </div>
 
     <div id="control_bar" class="control-bar-settings">
-        <div class="general-settings" onclick="toggleExtraKeys()">
-            <div class="private-settings">
-                <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg" id=""
-                    class="noVNC_button settings-icon" title="Show Extra Keys">
-                <span>Thao tác</span>
-            </div>
-        </div>
-        <div class="general-settings">
-            <div class="private-settings" onclick="toggleDisplayOption()">
-                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/settings.png" id=""
-                    class="noVNC_button settings-icon" title="Show Display Option">
-                <span>Hiển thị</span>
-            </div>
-            <div class="advan-option" id="option_display">
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                </div>
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                </div>
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+        <div id="width_control_bar" style="display: inline-flex;">
+            <div class="general-settings" onclick="toggleExtraKeys()">
+                <div class="private-settings">
+                    <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg" id=""
+                        class="noVNC_button settings-icon" title="Show Extra Keys">
+                    <span>Thao tác</span>
                 </div>
             </div>
-        </div>
-        <div class="general-settings">
-            <div class="private-settings" onclick="toggleScreen()">
-                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/camera.png" id=""
-                    class="noVNC_button settings-icon" title="Show Option Screen">
-                <span>Chụp hình</span>
+            <div class="general-settings">
+                <div class="private-settings" onclick="toggleDisplayOption()">
+                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/settings.png" id=""
+                        class="noVNC_button settings-icon" title="Show Display Option">
+                    <span>Hiển thị</span>
+                </div>
+                <div class="advan-option" id="option_display">
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
+                </div>
             </div>
-            <div class="advan-option" id="option_screen">
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+            <div class="general-settings">
+                <div class="private-settings" onclick="toggleScreen()">
+                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/camera.png" id=""
+                        class="noVNC_button settings-icon" title="Show Option Screen">
+                    <span>Chụp hình</span>
                 </div>
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                </div>
-                <div class="option-select">
-                    <span>Test...</span>
-                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                <div class="advan-option" id="option_screen">
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
+                    <div class="option-select">
+                        <span>Test...</span>
+                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="general-settings">
-            <div class="private-settings" onclick="toggleChatBox()">
-                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/chat.png" id=""
-                    class="noVNC_button settings-icon" title="Show Chat Box">
-                <span>Chat</span>
+            <div class="general-settings">
+                <div class="private-settings" onclick="toggleChatBox()">
+                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/chat.png" id=""
+                        class="noVNC_button settings-icon" title="Show Chat Box">
+                    <span>Chat</span>
+                </div>
+            </div>
+
+            <div id="noVNC_fullscreen_button" class="general-settings">
+                <div class="private-settings">
+                    <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
+                        class="noVNC_button settings-icon" title="Fullscreen">
+                    <span>Phóng to</span>
+                </div>
+            </div>
+
+            <!-- Drag/Pan the viewport -->
+            <div class="general-settings mobile-settings">
+                <div class="private-settings">
+                    <input type="image" alt="Drag" src="app/images/drag.svg" id="noVNC_view_drag_button"
+                        class="noVNC_button settings-icon noVNC_hidden" title="Move/Drag Viewport">
+                </div>
+            </div>
+
+            <!--noVNC Touch Device only buttons-->
+            <div class="general-settings mobile-settings">
+                <div class="private-settings">
+                    <input type="image" alt="No mousebutton" src="app/images/mouse_none.svg" id="noVNC_mouse_button0"
+                        class="noVNC_button settings-icon" title="Active Mouse Button">
+                    <input type="image" alt="Left mousebutton" src="app/images/mouse_left.svg" id="noVNC_mouse_button1"
+                        class="noVNC_button settings-icon" title="Active Mouse Button">
+                    <input type="image" alt="Middle mousebutton" src="app/images/mouse_middle.svg"
+                        id="noVNC_mouse_button2" class="noVNC_button settings-icon" title="Active Mouse Button">
+                    <input type="image" alt="Right mousebutton" src="app/images/mouse_right.svg"
+                        id="noVNC_mouse_button4" class="noVNC_button settings-icon" title="Active Mouse Button">
+                </div>
+            </div>
+
+            <div class="general-settings mobile-settings">
+                <div class="private-settings">
+                    <input type="image" alt="Keyboard" src="app/images/keyboard.svg" id="noVNC_keyboard_button"
+                        class="noVNC_button settings-icon" title="Show Keyboard">
+                </div>
             </div>
         </div>
 
-        <div id="noVNC_fullscreen_button" class="general-settings">
-            <div class="private-settings">
-                <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
-                    class="noVNC_button settings-icon" title="Fullscreen">
-                <span>Phóng to</span>
-            </div>
-        </div>
-
-        <!-- Drag/Pan the viewport -->
-        <div class="general-settings mobile-settings">
-            <div class="private-settings">
-                <input type="image" alt="Drag" src="app/images/drag.svg" id="noVNC_view_drag_button"
-                    class="noVNC_button settings-icon noVNC_hidden" title="Move/Drag Viewport">
-            </div>
-        </div>
-
-        <!--noVNC Touch Device only buttons-->
-        <div class="general-settings mobile-settings">
-            <div class="private-settings">
-                <input type="image" alt="No mousebutton" src="app/images/mouse_none.svg" id="noVNC_mouse_button0"
-                    class="noVNC_button settings-icon" title="Active Mouse Button">
-                <input type="image" alt="Left mousebutton" src="app/images/mouse_left.svg" id="noVNC_mouse_button1"
-                    class="noVNC_button settings-icon" title="Active Mouse Button">
-                <input type="image" alt="Middle mousebutton" src="app/images/mouse_middle.svg" id="noVNC_mouse_button2"
-                    class="noVNC_button settings-icon" title="Active Mouse Button">
-                <input type="image" alt="Right mousebutton" src="app/images/mouse_right.svg" id="noVNC_mouse_button4"
-                    class="noVNC_button settings-icon" title="Active Mouse Button">
-            </div>
-        </div>
-
-        <div class="general-settings mobile-settings">
-            <div class="private-settings">
-                <input type="image" alt="Keyboard" src="app/images/keyboard.svg" id="noVNC_keyboard_button"
-                    class="noVNC_button settings-icon" title="Show Keyboard">
-            </div>
-        </div>
     </div>
 
     <div class="extra-keys" id="extra_keys">
@@ -476,8 +221,6 @@
                 class="noVNC_button" title="Send Ctrl-Alt-Del">
         </div>
     </div>
-
-
 
     <div id="noVNC_fallback_error" class="noVNC_center">
         <div>
@@ -765,20 +508,17 @@
     </div>
 
     <!-- noVNC Chat -->
-    <div id="chat_box" class="chat-box" draggable="true">
+    <div id="chat_box" class="chat-box">
         <div class="title-chat">
-            <span style="float: left; margin-top: 3px;">Ultraview</span>
-            <input style="width: 22px; float: right; margin-right: 3px;" onclick="closeChatBox()" type="image"
-                alt="Extra keys" src="app/images/update/close.png" id="" class="">
+            <span class="title-label">Ultraview</span>
+            <input class="title-btn-close" onclick="closeChatBox()" type="image alt="Extra keys" src="app/images/update/close.png">
             <div style="clear: both;"></div>
         </div>
         <div class="body-chat">
             <span>Ai đang xem máy tính của bạn</span>
             <div class="controller-comp">
-                <div style="padding: 5px; background: #cce5ff; text-transform: uppercase;">
-                    <span>
-                        <img style="padding-right: 5px;" src="app/images/update/online.png" alt="">ewrwerwere
-                    </span>
+                <div class="description">
+                    <span><img src="app/images/update/online.png" alt="">ewrwerwere</span>
                 </div>
 
             </div>
@@ -794,239 +534,176 @@
                 </div>
 
                 <!-- File đang upload -->
-                <div style="margin: 5px; background: lightblue;border-radius: 5px; padding: 5px;">
-                    <div style="float: left; width: 15%;">
-                        <img style="width: 30px; margin-top: 2px;" src="app/images/update/file.png" alt="">
-                        <div style="margin-top: 2px;">10:04</div>
+                <div class="uploading-file">
+                    <div class="file-info-1">
+                        <img src="app/images/update/file.png" alt="">
+                        <div class="time-upload">10:04</div>
                     </div>
-                    <div style="float: left; width: 77%;">
-                        <div class="progress" style="background: lightblue; margin: 0 5px;">
-                            <div style="text-align: center;">xxx.rar</div>
-                            <div style="background: white;">
-                                <div class="progress-bar" style="width:70%; margin: 3px 0 5px 0;">
-                                    70%
-                                </div>
+                    <div class="file-info-2">
+                        <div class="progress">
+                            <div class="file-name">xxx.rar</div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-uploading">70%</div>
                             </div>
-                            <div style="text-align: center; font-size: 11px;">6.95 /119 MB</div>
+                            <div class="file-size">6.95 /119 MB</div>
                         </div>
                     </div>
-                    <div style="float: left; width: 8%;">
-                        <img style="width: 15px;margin-top: 15px;" src="app/images/update/close.png" alt="">
+                    <div class="file-info-3">
+                        <img src="app/images/update/close.png" alt="">
                     </div>
                     <div style="clear: both;"></div>
                 </div>
 
                 <!-- File upload  thành công-->
-                <div style="margin: 5px; background: #d0e4eafc;border-radius: 5px; padding: 5px;">
-                    <div style="float: left; width: 15%;">
-                        <img style="width: 30px; margin-top: 2px;" src="app/images/update/file.png" alt="">
-                        <div style="margin-top: 2px;">10:04</div>
+                <div class="upload-success">
+                    <div class="file-info-1">
+                        <img src="app/images/update/file.png" alt="">
+                        <div class="time-upload">10:04</div>
                     </div>
-                    <div style="float: left; width: 80%;">
-                        <div class="progress" style="background: #d0e4eafc; margin: 0 5px;">
-                            <div style="margin-top: 4px;">xxx.rar</div>
-                            <div style="font-size: 11px; margin-top: 2px;">119 MB</div>
-                            <div style="margin-top: 4px; text-align: center;">Success</div>
+                    <div class="file-info-2">
+                        <div class="progress">
+                            <div class="file-name">xxx.rar</div>
+                            <div class="file-size">119 MB</div>
+                            <div class="file-status">Success</div>
                         </div>
                     </div>
                     <div style="clear: both;"></div>
                 </div>
             </div>
 
-            <div style="margin-top: 7px;">
-                <input id="input_chat_box" type="text"
-                    style="margin: 0; padding: 5px; float: left; border-radius: 2px; width: 66%; border: 1px solid #a9a9a961;"
-                    placeholder="Nhấn F1 để chat nhanh">
+            <div class="user-chat-box">
+                <input id="input_chat_box" type="text" class="input-chat-box" placeholder="Nhấn F1 để chat nhanh">
                 <div class="image-upload">
                     <label for="file-input">
-                        <img style="width: 25px; float: left; margin-top: 3px; margin-left: 10px;"
-                            src="app/images/update/attach.png" />
+                        <img src="app/images/update/attach.png" />
                     </label>
-
-                    <input style="display: none;" id="file-input" type="file" />
+                    <input id="file-input" type="file" />
                 </div>
-
-                <input style="width: 25px; float: right; margin-top: 3px;" type="image" alt="Extra keys"
-                    src="app/images/update/send-mess.png" id="" class="" title="Attach File">
+                <input class="send-message" type="image" src="app/images/update/send-mess.png" id="">
                 <div style="clear: both;"></div>
             </div>
         </div>
     </div>
 
     <script>
-        function closeAllPanels() {
-            closeExtraKeys();
-            closeDisplayOption();
-            closeScreen();
+        // let widthOfChatBox123 = document.getElementById('chat_box').offsetWidth;
+        // let heightOfChatBox123 = document.getElementById('chat_box').offsetHeight;
+        // let maxSizeWidthScreen = screen.width - 20 - widthOfChatBox123;
+        // let maxSizeHeightScreen = screen.height - heightOfChatBox123;
+        // console.log(maxSizeHeightScreen);
+        // $(function () { $("#chat_box").draggable({ containment: [0, 0, maxSizeWidthScreen, 450] }); });
+
+        $(function () { $("#chat_box").draggable({ containment: "window" }); });
+
+        $(function () { $("#arrow_control_bar_handle").draggable({ containment: "#test_box" }); });
+
+        // let widthOfChatBox = document.getElementById('width_control_bar').offsetWidth;
+
+        // let rangeMove = (screen.width - widthOfChatBox) / 2;
+        // let maxRangeMove = screen.width - widthOfChatBox - rangeMove;
+
+        // console.log("rangeMove:" + rangeMove);
+        // console.log("maxRangeMove:" + maxRangeMove);
+
+        if (document.getElementById("control_bar").classList.contains("control-bar-active")) {
+            $('#test_box').css('margin-top', '45px');
         }
 
-        function openControlbar() {
-            document.getElementById('control_bar').classList.add("control-bar-active");
-            document.getElementById('arrow_control_bar_handle').classList.add("arrow-control-bar-active");
-        }
+        $(function () {
+            $('#arrow_control_bar_handle').hover(function () {
+                let widthOfChatBox = document.getElementById('width_control_bar').offsetWidth;
 
-        function closeControlbar() {
-            document.getElementById('control_bar').classList.remove("control-bar-active");
-            document.getElementById('arrow_control_bar_handle').classList.remove("arrow-control-bar-active");
-        }
+                let rangeMove = (screen.width - widthOfChatBox) / 2;
+                let maxRangeMove = screen.width - widthOfChatBox - rangeMove;
 
-        function toggleControlbar() {
-            if (document.getElementById("control_bar").classList.contains("control-bar-active")) {
-                closeControlbar();
-            } else {
-                openControlbar();
-            }
-        }
+                console.log("rangeMove:" + rangeMove);
+                console.log("maxRangeMove:" + maxRangeMove);
 
-        function openExtraKeys() {
-            closeAllPanels();
-            document.getElementById('extra_keys').classList.add("extra-keys-active");
-        }
+                // if (document.getElementById("control_bar").classList.contains("control-bar-active")) {
+                //     $('#test_box').css('margin-top', '45px');
+                // }
 
-        function closeExtraKeys() {
-            document.getElementById('extra_keys').classList.remove("extra-keys-active");
-        }
 
-        function toggleExtraKeys() {
-            if (document.getElementById("extra_keys").classList.contains("extra-keys-active")) {
-                closeExtraKeys();
-            } else {
-                openExtraKeys();
-            }
-        }
+                $('#test_box').css('width', widthOfChatBox);
+                $('#test_box').css('margin-left', rangeMove);
+                // $('#test_box').css('margin-top', '45px');
+                $('#test_box').css('height', '90%');
+                $('#test_box').css('position', 'absolute');
+                $('#test_box').css('border', '1px solid yellow');
 
-        function openDisplayOption() {
-            closeAllPanels();
-            document.getElementById('option_display').classList.add("advan-option-open");
-        }
-
-        function closeDisplayOption() {
-            document.getElementById('option_display').classList.remove("advan-option-open");
-        }
-
-        function toggleDisplayOption() {
-            if (document.getElementById("option_display").classList.contains("advan-option-open")) {
-                closeDisplayOption();
-            } else {
-                openDisplayOption();
-            }
-        }
-
-        function openScreen() {
-            closeAllPanels();
-            document.getElementById('option_screen').classList.add("advan-option-open");
-        }
-
-        function closeScreen() {
-            document.getElementById('option_screen').classList.remove("advan-option-open");
-        }
-
-        function toggleScreen() {
-            if (document.getElementById("option_screen").classList.contains("advan-option-open")) {
-                closeScreen();
-            } else {
-                openScreen();
-            }
-        }
-
-        function openChatBox() {
-            closeAllPanels();
-            document.getElementById('chat_box').classList.add("chat-box-open");
-            setTimeout(function () {
-                document.getElementById('input_chat_box').focus();
-            }, 100);
-        }
-
-        function closeChatBox() {
-            document.getElementById('chat_box').classList.remove("chat-box-open");
-        }
-
-        function toggleChatBox() {
-            if (document.getElementById("chat_box").classList.contains("chat-box-open")) {
-                closeChatBox();
-            } else {
-                openChatBox();
-            }
-        }
-
-        // Button F1 - open chat box
-        shortcut.add("F1", function () {
-            toggleChatBox();
+                // $('#arrow_control_bar_handle').css('width', 'auto');
+                // $('#arrow_control_bar_handle').css('right', '');
+            }, function () {
+                // on mouseout, reset the background colour
+                // $('#test_box').css('width', '');
+                // $('#test_box').css('height', '');
+                // $('#test_box').css('position', '');
+                // $('#test_box').css('border', '');
+                // $('#test_box').css('margin-top', '');
+                // $('#test_box').css('margin-left', '');
+                // $('#test_box').css('background-color', '');
+            });
         });
 
-        // Chat Enter - content chat box
-        shortcut.add("Enter", function () {
-            // Get time now
-            let d = new Date();
-            let hours = d.getHours();
-            let min = d.getMinutes();
-            let newChat = document.getElementById("input_chat_box").value;
-
-            // Add new node chat to the conversation and refresh
-            let parent = document.getElementById('conversation');
-            let newChild = '<div class="test"><span class="my-mess"><b>Tôi </b>(' + hours + ':' + min + '): </span >' + newChat + '</div > ';
-            parent.insertAdjacentHTML('beforeend', newChild);
-            document.getElementById("input_chat_box").value = "";
-
-            // Scroll to the lastest chat 
-            let listChat = document.getElementsByClassName("test");
-            let lastChat = listChat[listChat.length - 1];
-            lastChat.scrollIntoView({ behavior: 'smooth' });
-        });
+        // $(document).ready(function () {
+        //     $("#arrow_control_bar_handle").draggable({
+        //         containment: "test_box",
+        //         drag: function (event, ui) {
+        //             //ui.position.left = Math.min( 500, ui.position.left );
+        //             $('#d1').html("X: " + ui.position.left + ",<br> Y: " + ui.position.top)
+        //         }
+        //     });
+        // })
 
 
-        // Move chat box anywhere you want
-        function drag_start(event) {
-            var style = window.getComputedStyle(event.target, null);
-            event.dataTransfer.setData("text/plain",
-                (parseInt(style.getPropertyValue("left"), 10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
-        }
-        function drag_over(event) {
-            event.preventDefault();
-            return false;
-        }
-        function drop(event) {
-            var offset = event.dataTransfer.getData("text/plain").split(',');
-            var dm = document.getElementById('chat_box');
-            let widthOfChatBox = document.getElementById('chat_box').offsetWidth;
-            let heightOfChatBox = document.getElementById('chat_box').offsetHeight;
+        // Drag file to chat box
+        function handleFileSelect(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
 
-            // Set width max khi di chuyển chat box
-            if (event.clientX > (screen.width - widthOfChatBox)) {
-                dm.style.left = (screen.width - widthOfChatBox - 20) + 'px';
-                // Không hiểu khác nhau là gì ? 
-                // console.log(posLeftChatBox);
-                // console.log(dm.style.left);
-            } else {
-                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+            var listFiles = evt.dataTransfer.files; // FileList object.
+            
+            // files is a FileList of File objects. List some properties.
+            for (let file of listFiles) {
+                let parent = document.getElementById('conversation');
+
+                let newChild = 
+                    '<div class="uploading-file">'+
+                        '<div class="file-info-1">'+
+                            '<img src="app/images/update/file.png" alt="">'+
+                            '<div class="time-upload">10:04</div>'+
+                        '</div>'+
+                        '<div class="file-info-2">'+
+                            '<div class="progress">'+
+                                '<div class="file-name">'+ file.name + '</div>'+
+                                '<div class="progress-bar">'+
+                                    '<div class="progress-bar-uploading">70%</div>'+
+                                '</div>'+
+                                '<div class="file-size">'+ file.size +'</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="file-info-3">'+
+                            '<img src="app/images/update/close.png" alt="">'+
+                        '</div>'+
+                        '<div style="clear: both;"></div>'+
+                    '</div>'
+                ;
+
+                parent.insertAdjacentHTML('beforeend', newChild);
             }
-
-            // Set height max khi di chuyển chat box
-            console.log(screen.height);
-            console.log(heightOfChatBox);
-            let test = screen.height - heightOfChatBox;
-            console.log(test);
-
-            if (event.clientY > (screen.height - heightOfChatBox)) {
-                dm.style.top = (screen.height - heightOfChatBox) + 'px';
-            } else {
-                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-            }
-
-            // dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
-            // dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-            event.preventDefault();
-            return false;
+            scrollLastestChat();
         }
-        var dm = document.getElementById('chat_box');
-        dm.addEventListener('dragstart', drag_start, false);
-        document.body.addEventListener('dragover', drag_over, false);
-        document.body.addEventListener('drop', drop, false);
 
+        function handleDragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'move'; // Explicitly show this is a move.
+        }
 
-        // let intPosLeftChatBox = posLeftChatBox.slice(posLeftChatBox.length - 3, posLeftChatBox.length - 1);
-        // console.log(intPosLeftChatBox);
-        // console.log(typeof posLeftChatBox);
+        // Setup the dnd listeners.
+        var dropZone = document.getElementById('chat_box');
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', handleFileSelect, false);
     </script>
 </body>
 
