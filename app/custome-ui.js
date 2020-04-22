@@ -77,50 +77,30 @@ function toggleScreen() {
 }
 
 function openChatBox() {
-    closeAllPanels();
-    document.getElementById('chat_box').classList.add("chat-box-open");
-    setTimeout(function () {
-        document.getElementById('input_chat_box').focus();
-    }, 100);
+    // truyền info sang cho parent 
+    console.log("alo OPEN ");
+
+    // let nameEvent = "open-chat-box";
+    // let data = { name_event: nameEvent };
+    // parent.postMessage(data, "*");
+
+    // closeAllPanels();
+
 }
 
 function closeChatBox() {
+    console.log("close - custome-io");
     document.getElementById('chat_box').classList.remove("chat-box-open");
 }
 
 function toggleChatBox() {
-    if (document.getElementById("chat_box").classList.contains("chat-box-open")) {
-        closeChatBox();
-    } else {
-        openChatBox();
-    }
-}
+    let nameEvent = "open-chat-box";
+    let data = { name_event: nameEvent };
+    parent.postMessage(data, "*");
 
-// -------------- HANDLE CHAT BOX --------------------- //
-// Button F1 - open chat box
-shortcut.add("F1", function () {
-    toggleChatBox();
-});
-
-// Chat Enter - content chat box
-shortcut.add("Enter", function () {
-    // Get time now
-    let d = new Date();
-    let hours = d.getHours();
-    let min = d.getMinutes();
-    let newChat = document.getElementById("input_chat_box").value;
-
-    // Add new node chat to the conversation and refresh
-    let parent = document.getElementById('conversation');
-    let newChild = '<div class="test"><span class="my-mess"><b>Tôi </b>(' + hours + ':' + min + '): </span >' + newChat + '</div > ';
-    parent.insertAdjacentHTML('beforeend', newChild);
-    document.getElementById("input_chat_box").value = "";
-    scrollLastestChat();
-});
-
-// Scroll to the lastest chat 
-function scrollLastestChat() {
-    let listChat = document.getElementsByClassName("test");
-    let lastChat = listChat[listChat.length - 1];
-    lastChat.scrollIntoView({ behavior: 'smooth' });
+    // if (document.getElementById("chat_box").classList.contains("chat-box-open")) {
+    //     closeChatBox();
+    // } else {
+    //     openChatBox();
+    // }
 }

@@ -1,0 +1,8 @@
+{
+    "workbench.colorCustomizations": {
+    "sideBar.background": "#192024",
+    "sideBar.foreground": "#9aaeb8",
+    "list.hoverBackground": "#33434d",
+    "list.inactiveSelectionBackground": "#f5f3f32f",
+    }
+}
