@@ -7,12 +7,10 @@ function closeAllPanels() {
 
 function openControlbar() {
     document.getElementById('control_bar').classList.add("control-bar-active");
-    $('#test_box').css('margin-top', '45px');
     document.getElementById('arrow_control_bar_handle').classList.add("arrow-control-bar-active");
 }
 
 function closeControlbar() {
-    $('#test_box').css('margin-top', '0px');
     document.getElementById('control_bar').classList.remove("control-bar-active");
     document.getElementById('arrow_control_bar_handle').classList.remove("arrow-control-bar-active");
 }
