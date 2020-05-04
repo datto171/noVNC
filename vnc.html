@@ -75,121 +75,124 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- add Script for button F1 browser - Open chat -->
-    <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
-
     <!-- (ADD CUSTOME FILE JS) -->
     <script src="app/custome-ui.js"></script>
 
 </head>
 
 <body>
-    <div id="arrow_control_bar_handle" onclick="toggleControlbar()" class="arrow-control-bar">
+    <div id="test_box"></div>
+    <div id="test_box_2"></div>
+
+    <div id="arrow_control_bar_handle" class="arrow-control-bar" onmousedown="dragStartControlBar()"
+        onclick="toggleControlbar()">
+        <!-- <img style="width: 35px; background: white;" id="btn_move_control_bar" src="app/images/update/zoom.png" alt=""> -->
         <img style="width: 35px;" id="btn_control_bar" src="app/images/update/arrow-control-bar.png" alt="">
     </div>
 
     <div id="control_bar" class="control-bar-settings">
-        <div id="width_control_bar" style="display: contents;">
-            <div class="general-settings" onclick="toggleExtraKeys()">
-                <div class="private-settings">
-                    <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg" id=""
-                        class="noVNC_button settings-icon" title="Show Extra Keys">
-                    <span>Thao tác</span>
-                </div>
+        <!-- <div id="width_control_bar" style="display: contents;"> -->
+        <div class="general-settings" id="control_setting_1">
+            <div class="private-settings" onclick="toggleExtraKeys()">
+                <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg" id=""
+                    class="noVNC_button settings-icon" title="Show Extra Keys">
+                <span>Thao tác</span>
             </div>
-            <div class="general-settings">
-                <div class="private-settings" onclick="toggleDisplayOption()">
-                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/settings.png" id=""
-                        class="noVNC_button settings-icon" title="Show Display Option">
-                    <span>Hiển thị</span>
-                </div>
-                <div class="advan-option" id="option_display">
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
-                </div>
+        </div>
+        <div class="general-settings" id="control_setting_2">
+            <div class="private-settings" onclick="toggleDisplayOption()">
+                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/settings.png" id=""
+                    class="noVNC_button settings-icon" title="Show Display Option">
+                <span>Hiển thị</span>
             </div>
-            <div class="general-settings">
-                <div class="private-settings" onclick="toggleScreen()">
-                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/camera.png" id=""
-                        class="noVNC_button settings-icon" title="Show Option Screen">
-                    <span>Chụp hình</span>
+            <div class="advan-option" id="option_display">
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
                 </div>
-                <div class="advan-option" id="option_screen">
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
-                    <div class="option-select">
-                        <span>Test...</span>
-                        <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
-                            src="app/images/update/more.png" id="" class="" title="Show Display Option">
-                    </div>
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
                 </div>
-            </div>
-            <div class="general-settings">
-                <div class="private-settings" onclick="toggleChatBox()">
-                    <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/chat.png" id=""
-                        class="noVNC_button settings-icon" title="Show Chat Box">
-                    <span>Chat</span>
-                </div>
-            </div>
-
-            <div id="noVNC_fullscreen_button" class="general-settings">
-                <div class="private-settings">
-                    <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
-                        class="noVNC_button settings-icon" title="Fullscreen">
-                    <span>Phóng to</span>
-                </div>
-            </div>
-
-            <!-- Drag/Pan the viewport -->
-            <div class="general-settings mobile-settings">
-                <div class="private-settings">
-                    <input type="image" alt="Drag" src="app/images/drag.svg" id="noVNC_view_drag_button"
-                        class="noVNC_button settings-icon noVNC_hidden" title="Move/Drag Viewport">
-                </div>
-            </div>
-
-            <!--noVNC Touch Device only buttons-->
-            <div class="general-settings mobile-settings">
-                <div class="private-settings">
-                    <input type="image" alt="No mousebutton" src="app/images/mouse_none.svg" id="noVNC_mouse_button0"
-                        class="noVNC_button settings-icon" title="Active Mouse Button">
-                    <input type="image" alt="Left mousebutton" src="app/images/mouse_left.svg" id="noVNC_mouse_button1"
-                        class="noVNC_button settings-icon" title="Active Mouse Button">
-                    <input type="image" alt="Middle mousebutton" src="app/images/mouse_middle.svg"
-                        id="noVNC_mouse_button2" class="noVNC_button settings-icon" title="Active Mouse Button">
-                    <input type="image" alt="Right mousebutton" src="app/images/mouse_right.svg"
-                        id="noVNC_mouse_button4" class="noVNC_button settings-icon" title="Active Mouse Button">
-                </div>
-            </div>
-
-            <div class="general-settings mobile-settings">
-                <div class="private-settings">
-                    <input type="image" alt="Keyboard" src="app/images/keyboard.svg" id="noVNC_keyboard_button"
-                        class="noVNC_button settings-icon" title="Show Keyboard">
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
                 </div>
             </div>
         </div>
+        <div class="general-settings" id="control_setting_3">
+            <div class="private-settings" onclick="toggleScreen()">
+                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/camera.png" id=""
+                    class="noVNC_button settings-icon" title="Show Option Screen">
+                <span>Chụp hình</span>
+            </div>
+            <div class="advan-option" id="option_screen">
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                </div>
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                </div>
+                <div class="option-select">
+                    <span>Test...</span>
+                    <input style="width: 20px; float: right; margin-right: 5px;" type="image" alt="Extra keys"
+                        src="app/images/update/more.png" id="" class="" title="Show Display Option">
+                </div>
+            </div>
+        </div>
+        <div class="general-settings" id="control_setting_4">
+            <div class="private-settings" onclick="toggleChatBox()">
+                <input style="width: 25px;" type="image" alt="Extra keys" src="app/images/update/chat.png" id=""
+                    class="noVNC_button settings-icon" title="Show Chat Box">
+                <span>Chat</span>
+            </div>
+        </div>
+
+        <div class="general-settings" id="control_setting_5">
+            <div class="private-settings" id="noVNC_fullscreen_button">
+                <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
+                    class="noVNC_button settings-icon" title="Fullscreen">
+                <span>Phóng to</span>
+            </div>
+        </div>
+
+        <!-- Drag/Pan the viewport -->
+        <div class="general-settings mobile-settings" id="control_setting_6">
+            <div class="private-settings">
+                <input type="image" alt="Drag" src="app/images/drag.svg" id="noVNC_view_drag_button"
+                    class="noVNC_button settings-icon noVNC_hidden" title="Move/Drag Viewport">
+            </div>
+        </div>
+
+        <!--noVNC Touch Device only buttons-->
+        <div class="general-settings mobile-settings" id="control_setting_7">
+            <div class="private-settings">
+                <input type="image" alt="No mousebutton" src="app/images/mouse_none.svg" id="noVNC_mouse_button0"
+                    class="noVNC_button settings-icon" title="Active Mouse Button">
+                <input type="image" alt="Left mousebutton" src="app/images/mouse_left.svg" id="noVNC_mouse_button1"
+                    class="noVNC_button settings-icon" title="Active Mouse Button">
+                <input type="image" alt="Middle mousebutton" src="app/images/mouse_middle.svg" id="noVNC_mouse_button2"
+                    class="noVNC_button settings-icon" title="Active Mouse Button">
+                <input type="image" alt="Right mousebutton" src="app/images/mouse_right.svg" id="noVNC_mouse_button4"
+                    class="noVNC_button settings-icon" title="Active Mouse Button">
+            </div>
+        </div>
+
+        <div class="general-settings mobile-settings" id="control_setting_8">
+            <div class="private-settings">
+                <input type="image" alt="Keyboard" src="app/images/keyboard.svg" id="noVNC_keyboard_button"
+                    class="noVNC_button settings-icon" title="Show Keyboard">
+            </div>
+        </div>
+        <!-- </div> -->
+
 
     </div>
 
@@ -502,7 +505,48 @@
     </audio>
 
     <script>
+        let widthXXX = 0;
+        // foreach item to calculate width of control settings bar
+        for (let i = 1; i <= $('.general-settings').length; i++) {
+            let itemId = "#control_setting_" + i;
+            if (!$(itemId).hasClass("mobile-settings")) {
+                widthXXX += $(itemId).width();
+            }
+        }
+        let heightX = $("#arrow_control_bar_handle").height();
 
+        // calculate margin left 
+        let minPosLeftControlBar = ((screen.width - widthXXX) / 2);
+        let maxRangeMove = screen.width - widthXXX - minPosLeftControlBar;
+
+        // Mouse down => start move arrow settings control
+        function dragStartControlBar() {
+            // #test_box2 is div cover all screen help user can ez move item 
+            $('#test_box_2').addClass("test_box_2_active");
+
+            // #test_box is "space limit" for item arror control can move in this 
+            $('#test_box').css('width', widthXXX);
+            $('#test_box').css('height', heightX);
+            $('#test_box').css('margin-left', maxRangeMove);
+
+            $('#test_box').addClass("test_box_active");
+        }
+
+        // Mouse up => check div cover all screen => remove 
+        $(document).mouseup(function () {
+            if ($("#test_box_2").hasClass("test_box_2_active")) {
+                $('#test_box_2').removeClass("test_box_2_active");
+
+                $('#test_box').removeClass("test_box_active");
+                $('#test_box').css('width', 0);
+                $('#test_box').css('height', 0);
+                $('#test_box').css('margin-left', 0);
+            }
+
+            console.log("Mouse up 2");
+        });
+
+        $("#arrow_control_bar_handle").draggable({ containment: "#test_box" });
     </script>
 </body>
 
