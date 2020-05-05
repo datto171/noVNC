@@ -55,9 +55,6 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="app/styles/base.css">
 
-    <!-- (ADD CUSTOME FILE CSS) -->
-    <link rel="stylesheet" href="app/styles/custome-vnc.css">
-
     <!-- this is included as a normal file in order to catch script-loading errors as well -->
     <script src="app/error-handler.js"></script>
 
@@ -70,13 +67,16 @@
     <script type="module" crossorigin="anonymous" src="app/ui.js"></script>
     <!-- end scripts -->
 
+    <!-- (ADD CUSTOME FILE CSS) -->
+    <link rel="stylesheet" href="app/lib/custome-vnc.css">
+
     <!-- script dành cho di chuyển chat box và btn control bar  -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="app/lib/jquery-ui.css">
+    <script src="app/lib/jquery-1.12.4.js"></script>
+    <script src="app/lib/jquery-ui.js"></script>
 
     <!-- (ADD CUSTOME FILE JS) -->
-    <script src="app/custome-ui.js"></script>
+    <script src="app/lib/custome-ui.js"></script>
 
 </head>
 
@@ -154,7 +154,6 @@
                 <span>Chat</span>
             </div>
         </div>
-
         <div class="general-settings" id="control_setting_5">
             <div class="private-settings" id="noVNC_fullscreen_button">
                 <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
@@ -192,8 +191,6 @@
             </div>
         </div>
         <!-- </div> -->
-
-
     </div>
 
     <div class="extra-keys" id="extra_keys">
@@ -314,8 +311,8 @@
                 </div>
 
                 <!-- Toggle fullscreen -->
-                <input type="image" alt="Fullscreen" src="app/images/fullscreen.svg" id="noVNC_fullscreen_button"
-                    class="noVNC_button noVNC_hidden" title="Fullscreen">
+                <!-- <input type="image" alt="Fullscreen" src="app/images/fullscreen.svg" id="noVNC_fullscreen_button"
+                    class="noVNC_button noVNC_hidden" title="Fullscreen"> -->
 
                 <!-- Settings -->
                 <!-- DISPLAY NONE -->
@@ -542,8 +539,6 @@
                 $('#test_box').css('height', 0);
                 $('#test_box').css('margin-left', 0);
             }
-
-            console.log("Mouse up 2");
         });
 
         $("#arrow_control_bar_handle").draggable({ containment: "#test_box" });

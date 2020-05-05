@@ -11,6 +11,7 @@ function openControlbar() {
 }
 
 function closeControlbar() {
+    closeExtraKeys();
     document.getElementById('control_bar').classList.remove("control-bar-active");
     document.getElementById('arrow_control_bar_handle').classList.remove("arrow-control-bar-active");
 }
