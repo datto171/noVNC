@@ -154,8 +154,10 @@
                 <span>Chat</span>
             </div>
         </div>
+
         <div class="general-settings" id="control_setting_5">
-            <div class="private-settings" id="noVNC_fullscreen_button">
+            <!-- <div class="private-settings" id="noVNC_fullscreen_button"> -->
+            <div class="private-settings" onclick="testFullScreen()">
                 <input style="width: 25px;" type="image" alt="Fullscreen" src="app/images/update/zoom.png"
                     class="noVNC_button settings-icon" title="Fullscreen">
                 <span>Phóng to</span>
@@ -191,6 +193,8 @@
             </div>
         </div>
         <!-- </div> -->
+
+
     </div>
 
     <div class="extra-keys" id="extra_keys">
@@ -311,8 +315,8 @@
                 </div>
 
                 <!-- Toggle fullscreen -->
-                <!-- <input type="image" alt="Fullscreen" src="app/images/fullscreen.svg" id="noVNC_fullscreen_button"
-                    class="noVNC_button noVNC_hidden" title="Fullscreen"> -->
+                <input type="image" alt="Fullscreen" src="app/images/fullscreen.svg" id="noVNC_fullscreen_button"
+                    class="noVNC_button" title="Fullscreen">
 
                 <!-- Settings -->
                 <!-- DISPLAY NONE -->
@@ -502,6 +506,13 @@
     </audio>
 
     <script>
+        // let item = $("#iframe_connect_1");
+        // function openFullScreen() {
+        //     if (item.requestFullscreen) {
+        //         item.requestFullscreen();
+        //     }
+        // }
+
         let widthXXX = 0;
         // foreach item to calculate width of control settings bar
         for (let i = 1; i <= $('.general-settings').length; i++) {

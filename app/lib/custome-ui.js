@@ -75,31 +75,14 @@ function toggleScreen() {
     }
 }
 
-function openChatBox() {
-    // truyền info sang cho parent 
-    console.log("alo OPEN ");
-
-    // let nameEvent = "open-chat-box";
-    // let data = { name_event: nameEvent };
-    // parent.postMessage(data, "*");
-
-    // closeAllPanels();
-
-}
-
-function closeChatBox() {
-    console.log("close - custome-io");
-    document.getElementById('chat_box').classList.remove("chat-box-open");
-}
-
 function toggleChatBox() {
-    let nameEvent = "open-chat-box";
+    let nameEvent = "toggle-chat-box";
     let data = { name_event: nameEvent };
     parent.postMessage(data, "*");
+}
 
-    // if (document.getElementById("chat_box").classList.contains("chat-box-open")) {
-    //     closeChatBox();
-    // } else {
-    //     openChatBox();
-    // }
+function testFullScreen() {
+    let nameEvent = "toggle-full-screen";
+    let data = { name_event: nameEvent };
+    parent.postMessage(data, "*");
 }
